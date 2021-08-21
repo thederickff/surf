@@ -11,12 +11,14 @@
     "style:check": "prettier --check 'src/**/*.ts' 'test/**/*.ts'",
     "style:fix": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:functional": "jest --projects ./test --runInBand"
+    "test:functional": "jest --projects ./test --runInBand",
+    "test:unit": "jest"
   },
   "author": "Derick Felix",
   "license": "MIT",
   "dependencies": {
     "@overnightjs/core": "^1.7.6",
+    "axios": "^0.21.1",
     "express": "^4.17.1",
     "module-alias": "^2.2.2"
   },
