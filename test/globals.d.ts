@@ -8,6 +8,6 @@ export interface CustomGlobal extends Global {
 
 declare global {
   module NodeJS {
-    interface Global { }
+    interface Global {}
   }
 }

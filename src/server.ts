@@ -4,7 +4,6 @@ import { json } from 'express';
 import { ForecastController } from './controllers/forecast.controller';
 
 export class SetupServer extends Server {
-  
   constructor(private port = 3000) {
     super();
   }
@@ -15,15 +14,13 @@ export class SetupServer extends Server {
   }
 
   private setupExpress(): void {
-    // this.app.use(json); 
+    // this.app.use(json);
     // this.app.listen(3000);
   }
 
   private setupControllers(): void {
     const forecastController = new ForecastController();
 
-    this.addControllers([
-      forecastController
-    ]);
+    this.addControllers([forecastController]);
   }
 }
