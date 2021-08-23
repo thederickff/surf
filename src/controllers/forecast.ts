@@ -1,4 +1,4 @@
-import { Controller, Get } from '@overnightjs/core';
+import { Controller, Get, Post } from '@overnightjs/core';
 import { Request, Response } from 'express';
 
 @Controller('forecast')
@@ -45,5 +45,10 @@ export class ForecastController {
         ]
       }
     ]);
+  }
+
+  @Post('')
+  public pos(req: Request, res: Response) {
+    res.status(200).send(req.body);
   }
 }
