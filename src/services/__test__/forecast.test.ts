@@ -1,26 +1,25 @@
 import { StormGlass } from '@src/clients/stormGlass';
 import stormGlassFetchPointsReturn from '@test/fixtures/storm_glass_fetch_points_return.json';
-import { Beach, BeachPosition, ForecastService } from '../forecast';
+import { Beach, BeachPosition, ForecastProcessingInternalError, ForecastService } from '../forecast';
 
 jest.mock('@src/clients/stormGlass');
 
 describe('Forecast service', () => {
-  StormGlass.prototype.fetchPoints = jest
-  .fn()
-  .mockResolvedValue(stormGlassFetchPointsReturn);
+  const mockedStormGlass = new StormGlass() as jest.Mocked<StormGlass>;
+  mockedStormGlass.fetchPoints.mockResolvedValue(stormGlassFetchPointsReturn);
+  const forecast = new ForecastService(mockedStormGlass);
+
+  const beaches: Beach[] = [
+    {
+      lat: -33.79,
+      lng: 151.28,
+      name: 'Manly',
+      position: BeachPosition.E,
+      user: 'some-id'
+    }
+  ];
 
   it('should return the forecast for a list of beaches', async () => {
-
-    const beaches: Beach[] = [
-      {
-        lat: -33.79,
-        lng: 151.28,
-        name: 'Manly',
-        position: BeachPosition.E,
-        user: 'some-id'
-      }
-    ];
-
     const expectedResponse = [
       {
         time: '2020-04-26T00:00:00+00:00',
@@ -81,8 +80,17 @@ describe('Forecast service', () => {
       }
     ];
 
-    const forecast = new ForecastService(new StormGlass());
     const beachesWithRating = await forecast.processForecastForBeaches(beaches);
     expect(beachesWithRating).toEqual(expectedResponse);
+  });
+
+  it('should return an empty list when the beaches array is empty', async () => {
+    const response = await forecast.processForecastForBeaches([]);
+    expect(response).toEqual([]);
+  });
+
+  it('should throw internal processing error when something goes wrong during the rating process', async () => {
+    mockedStormGlass.fetchPoints.mockRejectedValue('Error fetching data');
+    await expect(forecast.processForecastForBeaches(beaches)).rejects.toThrow(ForecastProcessingInternalError);
   });
 });
