@@ -46,9 +46,4 @@ export class ForecastController {
       }
     ]);
   }
-
-  @Post('')
-  public pos(req: Request, res: Response) {
-    res.status(200).send(req.body);
-  }
 }
