@@ -50,7 +50,7 @@ export class StormGlassResponseError extends InternalError {
 const stormGlassResourceConfig: IConfig = config.get('App.resources.StormGlass');
 
 export class StormGlass {
-  readonly params = 'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection, windSpeed';
+  readonly params = 'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
   readonly source = 'noaa';
   
   constructor(protected request = new HTTPUtil.Request()) { }

@@ -1,6 +1,7 @@
 import { StormGlass } from '@src/clients/stormGlass';
+import { Beach, BeachPosition } from '@src/models/beach';
 import stormGlassFetchPointsReturn from '@test/fixtures/storm_glass_fetch_points_return.json';
-import { Beach, BeachPosition, ForecastProcessingInternalError, ForecastService } from '../forecast';
+import { ForecastProcessingInternalError, ForecastService } from '../forecast';
 
 jest.mock('@src/clients/stormGlass');
 
@@ -14,8 +15,7 @@ describe('Forecast service', () => {
       lat: -33.79,
       lng: 151.28,
       name: 'Manly',
-      position: BeachPosition.E,
-      user: 'some-id'
+      position: BeachPosition.E
     }
   ];
 
