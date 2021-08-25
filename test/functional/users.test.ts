@@ -8,13 +8,13 @@ describe('users functional test', () => {
   })
 
   describe('When creating a new user', () => {
-    it('should successfully create a new user', async () => {
-      const user = {
-        name: 'John Doe',
-        email: 'john@mail.com',
-        password: '123456'
-      };
+    const user = {
+      name: 'John Doe',
+      email: 'john@mail.com',
+      password: '123456'
+    };
 
+    it('should successfully create a new user', async () => {
       const response = await global.testRequest.post('/users').send(user);
 
       expect(response.status).toBe(201);
@@ -27,14 +27,35 @@ describe('users functional test', () => {
         password: '123456'
       };
 
-      const response = await global.testRequest.post('/users').send(user);
+      const response = await global.testRequest.post('/users').send({
+        email: user.email,
+        password: user.password
+      });
+
       expect(response.status).toBe(422);
+    });
+
+    it('should return an error for duplicated email in the database', async () => {
+      await global.testRequest.post('/users').send(user);
+      const response = await global.testRequest.post('/users').send(user);
       expect(response.body).toEqual({
-        error: 'User validation failed: name: Path `name` is required.'
+        errors: ['Path `email` already exists in the database.']
       });
     });
 
-    it.skip('should return 500 when there is any error other than validation error', async () => {
-    })
+    it('should return three errors, name required, password required, and email duplicated', async () => {
+      await global.testRequest.post('/users').send(user);
+      const response = await global.testRequest.post('/users').send({
+        email: user.email
+      });
+
+      expect(response.body).toEqual({
+        errors: [
+          'Path `password` is required.',
+          'Path `name` is required.',
+          'Path `email` already exists in the database.'
+        ]
+      });
+    });
   })
 })

@@ -1,4 +1,4 @@
-import { Document, Model, model, Schema } from "mongoose";
+import { Document, Model, model, models, Schema } from "mongoose";
 
 export interface User {
   _id?: string;
@@ -20,6 +20,10 @@ const schema = new Schema({
     }
   }
 });
+
+schema.path('email').validate(async (email: string) => {
+  return !await models.User.countDocuments({ email });
+}, 'Path `email` already exists in the database.');
 
 interface UserModel extends Omit<User, '_id'>, Document { }
 export const User: Model<UserModel> = model('User', schema) as any;
