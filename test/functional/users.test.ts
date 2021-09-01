@@ -6,15 +6,15 @@ declare const global: CustomGlobal;
 describe('users functional test', () => {
   beforeEach(async () => {
     await User.deleteMany({});
-  })
+  });
+
+  const user = {
+    name: 'John Doe',
+    email: 'john@mail.com',
+    password: '123456'
+  };
 
   describe('When creating a new user', () => {
-    const user = {
-      name: 'John Doe',
-      email: 'john@mail.com',
-      password: '123456'
-    };
-
     it('should successfully create a new user with encrypted password', async () => {
       const response = await global.testRequest.post('/users').send(user);
 
@@ -58,6 +58,41 @@ describe('users functional test', () => {
           'Path `email` already exists in the database.'
         ]
       });
+    });
+  })
+
+  describe('When authenticating a user', () => {
+    it('should generate a token for a valid user', async () => {
+      await new User(user).save();
+      const response = await global.testRequest.post('/users/authenticate').send({
+        email: user.email,
+        password: user.password
+      });
+
+      expect(response.body).toEqual(
+        expect.objectContaining({ token: expect.any(String) })
+      );
+    });
+
+    it('should return UNAUTHORIZED if an user with the given email is not found', async () => {
+      const response = await global.testRequest.post('/users/authenticate').send({
+        email: user.email,
+        password: user.password
+      });
+
+      expect(response.status).toBe(401);
+      expect(response.body).toEqual({ message: 'user not found' });
+    });
+
+    it('should return UNAUTHORIZED if an user is found but the password does not match', async () => {
+      await new User(user).save();
+      const response = await global.testRequest.post('/users/authenticate').send({
+        email: user.email,
+        password: 'other-password'
+      });
+
+      expect(response.status).toBe(401);
+      expect(response.body).toEqual({ message: 'the password does not match' });
     });
   })
 })
