@@ -5,8 +5,7 @@
       "url": "MONGODB_URL"
     },
     "auth": {
-      "key": "JWT_SECRET_KEY",
-      "tokenExpiresIn": "200000000"
+      "key": "JWT_SECRET_KEY"
     },
     "resources": {
       "StormGlass": {
