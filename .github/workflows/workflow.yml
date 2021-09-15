@@ -18,7 +18,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       
       - name: Start Mongodb
-        uses: supercharge/mongodb-github-actions@1.1.0
+        uses: supercharge/mongodb-github-action@1.6.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
       
@@ -26,4 +26,4 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Run all tests
-        run: yarn test 
+        run: yarn testg 
