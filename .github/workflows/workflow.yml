@@ -26,4 +26,4 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Run all tests
-        run: yarn testg 
+        run: yarn test
