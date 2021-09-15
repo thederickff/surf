@@ -41,10 +41,8 @@ jobs:
         run: heroku git:remote -a derick-surf
 
       - name: Deploy Application
-        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "derick-surf"
           heroku_email: "derickfelix@zoho.com"
-          branch: "master"
