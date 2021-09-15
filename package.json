@@ -7,13 +7,14 @@
     "build": "tsc",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
-    "start": "yarn build && node dist/src/index.js",
+    "start": "node dist/src/index.js",
     "style:check": "prettier --check 'src/**/*.ts' 'test/**/*.ts'",
     "style:fix": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
     "test": "yarn test:unit && yarn test:functional",
     "test:functional": "jest --projects ./test --runInBand",
     "test:unit": "jest"
   },
+  "engines": { "node": "12" },
   "author": "Derick Felix",
   "license": "MIT",
   "dependencies": {
